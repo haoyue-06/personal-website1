@@ -2,131 +2,409 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Edwin Personal Website</title>
-    <meta name = "viewport" content = "width =device-width,initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edwin Wong | Data Engineering Student</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary: #00d2ff; /* Tech Blue */
+            --secondary: #3a7bd5;
+            --bg: #0f172a; /* Dark Navy */
+            --card-bg: #1e293b;
+            --text: #e2e8f0;
+            --text-muted: #94a3b8;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        a { text-decoration: none; color: inherit; transition: 0.3s; }
+        ul { list-style: none; }
+
+        /* --- HEADER --- */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 20px 50px;
+            background: rgba(15, 23, 42, 0.9);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .logo { font-size: 1.5rem; font-weight: 700; color: var(--primary); }
+        
+        nav ul { display: flex; gap: 30px; }
+        nav a:hover { color: var(--primary); }
+
+        /* --- HERO SECTION --- */
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            flex-direction: column;
+            padding: 0 20px;
+            background: radial-gradient(circle at center, #1e293b 0%, #0f172a 100%);
+        }
+
+        .profile-img-container {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 4px solid var(--primary);
+            margin-bottom: 20px;
+            box-shadow: 0 0 20px rgba(0, 210, 255, 0.5);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .profile-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .hero h1 { font-size: 3rem; margin-bottom: 10px; }
+        .hero h2 { font-size: 1.2rem; color: var(--primary); margin-bottom: 20px; font-weight: 400; }
+        .hero p { max-width: 600px; color: var(--text-muted); margin-bottom: 30px; }
+
+        .btn {
+            padding: 12px 30px;
+            background: linear-gradient(45deg, var(--secondary), var(--primary));
+            color: white;
+            border-radius: 30px;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(0, 210, 255, 0.3);
+        }
+        .btn:hover { transform: translateY(-3px); box-shadow: 0 6px 20px rgba(0, 210, 255, 0.5); }
+
+        /* --- SECTIONS COMMON --- */
+        section { padding: 80px 10%; }
+        .section-title {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 50px;
+            position: relative;
+        }
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 4px;
+            background: var(--primary);
+            margin: 10px auto;
+            border-radius: 2px;
+        }
+
+        /* --- SKILLS --- */
+        .skills-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .skills-container img {
+            transition: transform 0.3s;
+            cursor: pointer;
+        }
+        .skills-container img:hover { transform: scale(1.2); }
+        /* --- EDUCATION TIMELINE --- */
+        .timeline {
+            position: relative;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .timeline::after {
+            content: '';
+            position: absolute;
+            width: 4px;
+            background-color: var(--card-bg);
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            margin-left: -2px;
+        }
+        
+        .timeline-item {
+            padding: 10px 40px;
+            position: relative;
+            background-color: inherit;
+            width: 50%;
+            opacity: 0; /* For animation */
+            transform: translateY(20px);
+            transition: all 0.6s ease;
+        }
+
+        .timeline-item.visible { opacity: 1; transform: translateY(0); }
+
+        .timeline-item.left { left: 0; text-align: right; }
+        .timeline-item.right { left: 50%; }
+
+        .timeline-item::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            right: -10px;
+            background-color: var(--primary);
+            border: 4px solid var(--bg);
+            top: 15px;
+            border-radius: 50%;
+            z-index: 1;
+        }
+        .timeline-item.right::after { left: -10px; }
+
+        .content {
+            padding: 20px 30px;
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .content h3 { color: var(--primary); font-size: 1.1rem; }
+        .content h4 { font-size: 0.9rem; margin-bottom: 10px; }
+        .content .grade { color: #4ade80; font-weight: bold; font-size: 0.9rem;}
+        .content .roles { font-size: 0.85rem; color: var(--text-muted); margin-top: 10px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 10px; }
+
+        /* --- COURSES & PROJECTS (GRID) --- */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            padding: 25px;
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.05);
+            transition: 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .card h3 { font-size: 1.1rem; margin-bottom: 10px; display: flex; align-items: center; gap: 10px;}
+        .card p { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 20px; }
+        .card-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--primary);
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        /* --- FOOTER --- */
+        footer {
+            background: #0b1120;
+            padding: 50px 20px;
+            text-align: center;
+        }
+        .social-links { margin-bottom: 20px; }
+        .social-links a {
+            font-size: 1.5rem;
+            margin: 0 15px;
+            color: var(--text-muted);
+        }
+        .social-links a:hover { color: var(--primary); }
+
+        /* --- RESPONSIVE --- */
+        @media screen and (max-width: 768px) {
+            .timeline::after { left: 31px; }
+            .timeline-item { width: 100%; padding-left: 70px; padding-right: 25px; }
+            .timeline-item.left, .timeline-item.right { left: 0; text-align: left; }
+            .timeline-item::after { left: 21px; }
+            .hero h1 { font-size: 2rem; }
+            nav { display: none; } /* Simplified for mobile */
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+    </style>
 </head>
-
 <body>
-    <nav>
-        <h3 class="logo">Edwin</h3>
-        <ul class="nav-links">
-            <li><a href="#home">Home</a></li>
-            <li><a href="#about">About</a></li>
-            <li><a href="#Education">Education Journey</a></li>
-            <li><a href="#course">Course</a></li>
-            <li><a href="#skill">Skill</a></li>
-            <li><a href="#links">Links</a></li>
-            <li><a href="#contact">Contact</a></li>
-        </ul>
+    <header>
+        <div class="logo">EDWIN WONG.</div>
+        <nav>
+            <ul>
+                <li><a href="#about">About</a></li>
+                <li><a href="#education">Education</a></li>
+                <li><a href="#courses">Courses</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
 
-        <button id="darkModeBtn">🌙</button>
-    </nav>
-
-
-    <section id="home" class="hero fade-in">
-        <h1>Hi, I'm Edwin</h1>
-        <p>I walk the quiet path of logic and creation —  
-           building, learning, evolving.</p>
-        <a href="#course" class="btn">View My Course</a>
-    </section>
-
-
-    <section id="about" class="about fade-in">
-        <h2>About Me</h2>
-        <div style="text-align:center;">
-             <img src="PASSPORT PIC.jpg" alt="My Photo"style="width:200px;border-radius:20px;box-shadow:0 4px 15px rgba(0,0,0,0.2);"><br><br>
+    <section class="hero" id="about">
+        <div class="profile-img-container">
+            <img src="PASSPORT PIC.jpg" alt="Edwin Wong Profile" class="profile-img">
         </div>
-
-        <p>NAME: EDWIN WONG JING HAO<br>
-            AGE: 19<br>
-            EDUCATION: BACHELOR OF COMPUTER SCIENCE(DATA ENGINEERING) WITH HONOUR (Y1S1)<br>
-            UNIVERSITY: UNIVERSITI TEKNOLOGI MALAYSIA(UTM)<br><br>
-            I'm a student who loves mathematics, logic, and crafting things that move the world quietly but surely.  <br>
-            Every line of code is my way of shaping the future I dream of.</p>
+        <h1>Edwin Wong Jing Hao</h1>
+        <h2>Data Engineering Student (Y1S1) | UTM</h2>
+        <p>A 19-year-old aspiring Data Engineer with a passion for technology, algorithms, and data structures. Combining academic excellence with hands-on coding skills.</p>
+        
+        <div class="skills-container">
+            <a href="https://developer.mozilla.org/en-US/docs/Web/cplusplus" target="_blank"><img src="https://skillicons.dev/icons?i=cpp" alt="cpp" width="40"/></a>
+            <a href="https://developer.mozilla.org/en-US/docs/Web/java" target="_blank"><img src="https://skillicons.dev/icons?i=java" alt="java" width="40"/></a>
+            <a href="https://developer.mozilla.org/en-US/docs/Web/javascript" target="_blank"><img src="https://skillicons.dev/icons?i=js" alt="js" width="40"/></a>
+            <a href="https://developer.mozilla.org/en-US/docs/Web/html5" target="_blank"><img src="https://skillicons.dev/icons?i=html" alt="html" width="40"/></a>
+            <a href="https://developer.mozilla.org/en-US/docs/Web/css3" target="_blank"><img src="https://skillicons.dev/icons?i=css" alt="css" width="40"/></a>
+        </div>
+        <br>
+        <a href="#contact" class="btn">Get In Touch</a>
     </section>
 
-    <section id="Education" class="Education fade-in">
-        <h2>Education Journey</h2>
-        <div class="Education">
-            <div class="journey">
-                <h3>🏫 Primary School (📅 2013 - 2018)</h3>
-                <p style="text-indent:2em">✏️ SJK (C) Kai Chung — "Where it all began!"<br></p>
-                <p style="text-indent:2em">📝 UPSR:7A 1B</p>
-                </p>
+    <section id="education">
+        <h2 class="section-title">Educational Journey</h2>
+        <div class="timeline">
+            
+            <div class="timeline-item right">
+                <div class="content">
+                    <h4>2025 - Present</h4>
+                    <h3>Universiti Teknologi Malaysia (UTM)</h3>
+                    <p>Bachelor of Computer Science (Data Engineering) with Honours</p>
+                    <p class="grade">Current Y1S1 Student</p>
+                </div>
             </div>
-            <div class="journey">
-                <h3>🏫 Secondary School (📅 2019 - 2024)</h3>
-                <p style="text-indent:2em">📘 SMK Kai Chung — "Exploring the world of knowledge!"<br></p>
-                <p style="text-indent:2em">📝 SPM:10A's</p>
-                </p>
+
+            <div class="timeline-item left">
+                <div class="content">
+                    <h4>2024 - 2025</h4>
+                    <h3>Johor Matriculation College</h3>
+                    <p>Physical Science Stream</p>
+                    <p class="grade">CGPA: 4.00</p>
+                    <div class="roles">
+                        • Treasurer (Moral Project)<br>
+                        • Safety Committee (College & Co-Curriculum)
+                    </div>
+                </div>
             </div>
-            <div class="journey">
-                <h3>🏫 Matriculation (📅 2024 - 2025)</h3>
-                <p style="text-indent:2em">🎓 Johor Matriculation College(KMJ)-Physical Science — "The foundation for future success!"<br></p>
-                <p style="text-indent:2em"> 📝 PSPM: CGPA 4.00</p>
+
+            <div class="timeline-item right">
+                <div class="content">
+                    <h4>2019 - 2024</h4>
+                    <h3>SMK Kai Chung</h3>
+                    <p>Secondary Education</p>
+                    <p class="grade">SPM: 10 A's</p>
+                    <div class="roles">
+                        • Black Belt (Taekwondo)<br>
+                        • Textbook Loan Prefect (Pengawas SPBT)<br>
+                        • Treasurer (STEM Club)
+                    </div>
+                </div>
             </div>
-           
-             <div class="journey">
-                <h3>🏛️ Bachelor of Computer Science (Data Engineering) (📅 2025 - Present)</h3>
-                <p style="text-indent:2em">🎓 University of Technology Malaysia (UTM) — "Mastering the Art of Data Engineering!"</p>
+
+            <div class="timeline-item left">
+                <div class="content">
+                    <h4>2013 - 2018</h4>
+                    <h3>SJK(C) Kai Chung</h3>
+                    <p>Primary Education</p>
+                    <p class="grade">UPSR: 7A 1B</p>
+                    <div class="roles">
+                        • Head of Prefect
+                    </div>
+                </div>
             </div>
+
         </div>
     </section>
+    <section id="courses">
+        <h2 class="section-title">Coursework & Projects</h2>
+        
+        <div class="grid-container">
+            <div class="card" style="border-color: var(--primary);">
+                <h3><i class="fas fa-heartbeat"></i> Mental Health App</h3>
+                <p>A dedicated application to support mental well-being. Developed using modern web technologies.</p>
+                <a href="https://github.com/limlijing/Mental-Health-Support-" target="_blank" class="card-link">View Project <i class="fas fa-arrow-right"></i></a>
+            </div>
 
+            <div class="card">
+                <h3><i class="fas fa-calculator"></i> Discrete Structure</h3>
+                <p>Code: SECI1013</p>
+                <a href="https://github.com/haoyue-06/My-computer-science-study-experience/tree/main/Discrete%20Structure" target="_blank" class="card-link">View Repo <i class="fas fa-external-link-alt"></i></a>
+            </div>
 
-    <section id="course" class="course fade-in">
-        <h2>Course</h2>
-        <div class="course">
             <div class="card">
-                <h3>SECI1013 DISCRETE STRUCTURE</h3>
-                <a class="card-btn" href="https://github.com/haoyue-06/My-computer-science-study-experience/tree/main/Discrete%20Structure" target="_blank">View</a>
+                <h3><i class="fas fa-code"></i> Programming Technique I</h3>
+                <p>Code: SECJ1013</p>
+                <a href="https://github.com/haoyue-06/My-computer-science-study-experience/tree/main/Programming%20Technique%20I" target="_blank" class="card-link">View Repo <i class="fas fa-external-link-alt"></i></a>
             </div>
+
             <div class="card">
-                <h3>SECJ1013 Programming Technique I</h3>
-                <a class="card-btn" href="https://github.com/haoyue-06/My-computer-science-study-experience/tree/main/Programming%20Technique%20I" target="_blank">View</a>
+                <h3><i class="fas fa-server"></i> Tech & Info Systems</h3>
+                <p>Code: SECP1513</p>
+                <a href="https://github.com/haoyue-06/My-computer-science-study-experience/tree/main/Technology%20And%20Information%20System" target="_blank" class="card-link">View Repo <i class="fas fa-external-link-alt"></i></a>
             </div>
+
             <div class="card">
-                <h3>SECP1513 TECHNOLOGY AND INFORMATION SYSTEM</h3>
-                <a class="card-btn" href="https://github.com/haoyue-06/My-computer-science-study-experience/tree/main/Technology%20And%20Information%20System" target="_blank">View</a>
+                <h3><i class="fas fa-microchip"></i> Digital Logic</h3>
+                <p>Code: SECR1013</p>
+                <a href="https://github.com/haoyue-06/My-computer-science-study-experience/tree/main/Digital%20Logic" target="_blank" class="card-link">View Repo <i class="fas fa-external-link-alt"></i></a>
             </div>
+
              <div class="card">
-                <h3>SECR1013 DIGITAL LOGIC</h3>
-                <a class="card-btn" href="https://github.com/haoyue-06/My-computer-science-study-experience/tree/main/Digital%20Logic" target="_blank">View</a>
-            </div>
-             <div class="card">
-                <h3>ULRS1032 INTEGRITY AND SNTI-CORRUPTION COURSE</h3>
-                <a class="card-btn" href="https://github.com/haoyue-06/My-computer-science-study-experience/tree/main/Integrity%20And%20Anti-Corruption" target="_blank">View</a>
+                <h3><i class="fas fa-balance-scale"></i> Integrity Course</h3>
+                <p>Code: ULRS1032</p>
+                <a href="https://github.com/haoyue-06/My-computer-science-study-experience/tree/main/Integrity%20And%20Anti-Corruption" target="_blank" class="card-link">View Repo <i class="fas fa-external-link-alt"></i></a>
             </div>
         </div>
     </section>
 
-     <section id="skill" class="skill fade-in">
-        <h2>Skill</h2>
-        <p> <a href="https://developer.mozilla.org/en-US/docs/Web/cplusplus" target="_blank" rel="noreferrer"> <img src="https://skillicons.dev/icons?i=cpp" alt="cplusplus" width="40" height="40"/> </a> <a href="https://developer.mozilla.org/en-US/docs/Web/css3" target="_blank" rel="noreferrer"> <img src="https://skillicons.dev/icons?i=css" alt="css3" width="40" height="40"/> </a> <a href="https://developer.mozilla.org/en-US/docs/Web/html5" target="_blank" rel="noreferrer"> <img src="https://skillicons.dev/icons?i=html" alt="html5" width="40" height="40"/> </a> <a href="https://developer.mozilla.org/en-US/docs/Web/java" target="_blank" rel="noreferrer"> <img src="https://skillicons.dev/icons?i=java" alt="java" width="40" height="40"/> </a> <a href="https://developer.mozilla.org/en-US/docs/Web/javascript" target="_blank" rel="noreferrer"> <img src="https://skillicons.dev/icons?i=js" alt="javascript" width="40" height="40"/> </a></p>
-
-    <section id="links" class="links fade-in">
-        <h2>Links</h2>
-        <p>LINKEDLN: <a href="www.linkedin.com/in/edwin-wong-2284b8384">www.linkedin.com/in/edwin-wong-2284b8384</a><br>
-            EMAIL: jinghaoh313@gmail.com</p>
-    </section>
- 
-    <section id="contact" class="contact fade-in">
-        <h2>Contact Me</h2>
-
-        <form>
-            <input type="text" placeholder="Your Name" required>
-            <input type="email" placeholder="Email Address" required>
-            <textarea placeholder="Your Message" required></textarea>
-            <button class="btn" type="submit">Send Message</button>
-        </form>
-    </section>
-
-
-    <footer>
-        © 2025 Edwin · All Rights Reserved
+    <footer id="contact">
+        <h2 style="color:white; margin-bottom: 20px;">Let's Connect</h2>
+        <div class="social-links">
+            <a href="https://www.linkedin.com/in/edwin-wong-2284b8384" target="_blank"><i class="fab fa-linkedin"></i></a>
+            <a href="mailto:jinghaoh313@gmail.com"><i class="fas fa-envelope"></i></a>
+            <a href="https://github.com/haoyue-06" target="_blank"><i class="fab fa-github"></i></a>
+        </div>
+        <p style="color: var(--text-muted); font-size: 0.9rem;">&copy; 2025 Edwin Wong Jing Hao. Built with Code.</p>
     </footer>
 
-    <script src="script.js"></script>
+    <script>
+        // Select all elements that need animation
+        const observerOptions = {
+            threshold: 0.2
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.timeline-item').forEach((el) => {
+            observer.observe(el);
+        });
+    </script>
 </body>
 </html>
